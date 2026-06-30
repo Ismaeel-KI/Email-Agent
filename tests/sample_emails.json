@@ -1,0 +1,42 @@
+{
+  "job_email": {
+    "message_id": "msg_001",
+    "subject": "Senior Python Developer Role — ₹30LPA — Immediate Joining",
+    "sender": "recruiter@techcorp.com",
+    "date": "Sat, 28 Jun 2026 10:00:00 +0000",
+    "snippet": "Hi, we found your profile and think you'd be a great fit.",
+    "body": "Hi, I came across your profile and think you'd be a great fit for a Senior Python Developer role at TechCorp. The position offers ₹30LPA with remote work options. Could you share your updated resume by Friday? We'd love to schedule a call next week. Please reply to confirm your interest."
+  },
+  "ad_email": {
+    "message_id": "msg_002",
+    "subject": "50% Off — Flash Sale Today Only!",
+    "sender": "noreply@store.com",
+    "date": "Sat, 28 Jun 2026 09:00:00 +0000",
+    "snippet": "Don't miss our biggest sale of the year.",
+    "body": "Don't miss our biggest sale of the year! Shop now and save 50% on all items. Offer valid today only. Click here to shop: https://store.com/sale"
+  },
+  "important_email": {
+    "message_id": "msg_003",
+    "subject": "Security Alert: New sign-in to your account",
+    "sender": "security@google.com",
+    "date": "Sat, 28 Jun 2026 08:00:00 +0000",
+    "snippet": "A new sign-in to your Google Account was detected.",
+    "body": "A new sign-in to your Google Account was detected from a new device in Chennai, India. If this was you, you can ignore this message. If not, please secure your account immediately by clicking the link below."
+  },
+  "personal_email": {
+    "message_id": "msg_004",
+    "subject": "Hey — are you free this weekend?",
+    "sender": "friend@gmail.com",
+    "date": "Sat, 28 Jun 2026 07:00:00 +0000",
+    "snippet": "Hey, wanted to catch up. Are you free this weekend?",
+    "body": "Hey! It's been a while. Are you free this weekend? A few of us are planning to meet up at the beach on Sunday. Let me know if you can make it!"
+  },
+  "finance_email": {
+    "message_id": "msg_005",
+    "subject": "Invoice #4821 from Razorpay — Due Friday",
+    "sender": "billing@razorpay.com",
+    "date": "Sat, 28 Jun 2026 06:00:00 +0000",
+    "snippet": "Your invoice #4821 for ₹999 is due on Friday.",
+    "body": "Hi, your invoice #4821 for ₹999 is due on Friday, 30 Jun 2026. Please make the payment before the due date to avoid any service interruption. Click here to pay: https://razorpay.com/invoice/4821"
+  }
+}
