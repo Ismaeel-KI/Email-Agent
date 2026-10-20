@@ -45,6 +45,11 @@ pip install -r requirements.txt
 Copy `.env` and fill in the required API keys:
 ```bash
 # Edit .env and set GEMINI_API_KEY
+
+Fill 
+GEMINI_API_KEY or OPENROUTER_API_KEY
+GMAIL_USER_EMAIL
+
 ```
 
 ### 3. Configure Google Gmail Credentials

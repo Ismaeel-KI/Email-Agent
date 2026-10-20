@@ -141,3 +141,8 @@ email-agent/credentials/token.json
 .env
 credentials/credentials.json
 credentials/token.json
+
+# Environmental Variable
+.env
+.evn.*
+!.env.example
