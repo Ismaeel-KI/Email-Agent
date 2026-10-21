@@ -11,6 +11,11 @@ token.pickle
 *.pem
 *.key
 
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Runtime data and exports (may contain private email content)
 data/
 *.db
