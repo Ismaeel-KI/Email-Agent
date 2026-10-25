@@ -10,7 +10,7 @@ function Field({ label, value }) {
     return (
         <div>
             <p className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-1">{label}</p>
-            <p className="text-sm text-slate-700">{value}</p>
+            <p className="text-sm text-slate-700 dark:text-slate-300">{value}</p>
         </div>
     )
 }
@@ -19,10 +19,31 @@ function renderBody(text) {
     if (!text) return <p className="text-sm text-slate-400">No content available.</p>
 
     const urlRegex = /(https?:\/\/[^\s]+)/g
-    return text.split('\n').map((line, i) => {
-        const parts = line.split(urlRegex)
+    const paragraphs = text
+        .replace(/\r\n?/g, '\n')
+        .split(/\n\s*\n/)
+        .flatMap(paragraph => {
+            const lines = paragraph.split('\n')
+            const blocks = []
+            let prose = []
+
+            for (const line of lines) {
+                if (/^\s*(?:[-*•]|\d+[.)])\s+/.test(line)) {
+                    if (prose.length) blocks.push(prose.join(' ').trim())
+                    prose = []
+                    blocks.push(line.trim())
+                } else if (line.trim()) {
+                    prose.push(line.trim())
+                }
+            }
+            if (prose.length) blocks.push(prose.join(' ').trim())
+            return blocks
+        })
+
+    return paragraphs.map((paragraph, i) => {
+        const parts = paragraph.split(urlRegex)
         return (
-            <p key={i} className="text-sm text-slate-700 leading-relaxed min-h-[1.25rem]">
+            <p key={i} className="w-full text-base text-slate-700 leading-7 min-h-[1.5rem] whitespace-pre-wrap break-words dark:text-slate-200">
                 {parts.map((part, j) =>
                     urlRegex.test(part) ? (
                         <a
@@ -67,7 +88,7 @@ export default function Detail() {
     )
 
     return (
-        <div className="p-8 max-w-3xl mx-auto">
+        <div className="mx-auto w-full max-w-screen-2xl px-6 py-6 lg:px-12">
             {/* Back */}
             <button
                 onClick={() => navigate(-1)}
@@ -77,9 +98,9 @@ export default function Detail() {
             </button>
 
             {/* Header */}
-            <div className="bg-white rounded-xl border border-slate-100 p-6 mb-4">
+            <div className="bg-white rounded-xl border border-slate-100 p-7 mb-5 dark:bg-slate-900 dark:border-slate-800">
                 <div className="flex items-start justify-between gap-4 mb-4">
-                    <h1 className="text-lg font-semibold text-slate-800 leading-tight">
+                    <h1 className="text-2xl font-semibold text-slate-800 leading-snug dark:text-slate-100">
                         {email.subject}
                     </h1>
                     <CategoryBadge category={email.category} />
@@ -90,44 +111,50 @@ export default function Detail() {
                     <Field label="Date" value={email.date} />
                 </div>
             </div>
-
-            {/* AI Summary */}
-            {email.summary && (
-                <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-5 mb-4">
-                    <p className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-1.5">
-                        AI Summary
+            
+            <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+                {/* Body */}
+                <div className="min-w-0 bg-white rounded-xl border border-slate-100 p-5 lg:p-8 dark:bg-slate-900 dark:border-slate-800">
+                    <p className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-3">
+                        Email Body
                     </p>
-                    <p className="text-sm text-indigo-900 leading-relaxed">{email.summary}</p>
-                    {email.reasoning && (
-                        <p className="text-xs text-indigo-400 mt-2 italic">{email.reasoning}</p>
-                    )}
-                </div>
-            )}
-
-            {/* Action */}
-            {email.requires_action && (
-                <div className="bg-orange-50 border border-orange-100 rounded-xl p-5 mb-4">
-                    <p className="text-xs font-medium text-orange-400 uppercase tracking-wide mb-1.5">
-                        Action Required
-                    </p>
-                    <div className="flex items-center gap-2 mb-1">
-                        <ActionFlag actionType={email.action_type} deadline={email.deadline} />
+                    <div className="w-full max-w-none space-y-2">
+                        {renderBody(email.body || email.snippet)}
                     </div>
-                    {email.action_detail && (
-                        <p className="text-sm text-orange-800 mt-1">{email.action_detail}</p>
+                </div>
+                <aside className="space-y-4 lg:sticky lg:top-6 self-start">
+                    {/* AI Summary */}
+                    {email.summary && (
+                        <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-5 mb-4 dark:bg-indigo-950/70 dark:border-indigo-900">
+                            <p className="text-xs font-medium text-indigo-500 uppercase tracking-wide mb-1.5 dark:text-indigo-300">
+                                AI Summary
+                            </p>
+                            <p className="text-base text-indigo-900 leading-relaxed dark:text-indigo-100">{email.summary}</p>
+                            {email.reasoning && (
+                                <p className="text-xs text-indigo-500 mt-2 italic dark:text-indigo-300">{email.reasoning}</p>
+                            )}
+                        </div>
                     )}
-                </div>
-            )}
 
-            {/* Body */}
-            <div className="bg-white rounded-xl border border-slate-100 p-6">
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-3">
-                    Email Body
-                </p>
-                <div className="space-y-1">
-                    {renderBody(email.body || email.snippet)}
-                </div>
+                    {/* Action */}
+                    {email.requires_action && (
+                        <div className="bg-orange-50 border border-orange-100 rounded-xl p-5 mb-4 dark:bg-orange-950/60 dark:border-orange-900">
+                            <p className="text-xs font-medium text-orange-500 uppercase tracking-wide mb-1.5 dark:text-orange-300">
+                                Action Required
+                            </p>
+                            <div className="flex items-center gap-2 mb-1">
+                                <ActionFlag actionType={email.action_type} deadline={email.deadline} />
+                            </div>
+                            {email.action_detail && (
+                                <p className="text-sm text-orange-800 mt-1 dark:text-orange-100">{email.action_detail}</p>
+                            )}
+                        </div>
+                    )}
+
+                </aside>
             </div>
+
+            
 
             {/* Meta */}
             {email.confidence && (

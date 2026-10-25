@@ -43,7 +43,7 @@ export default function Digest() {
     const categories = ['all', ...new Set(emails.map(e => e.category).filter(Boolean))]
 
     return (
-        <div className="p-8 max-w-4xl mx-auto">
+        <div className="p-6 lg:p-10 w-full max-w-screen-2xl mx-auto">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
@@ -101,11 +101,11 @@ export default function Digest() {
                                         key={email.id}
                                         onClick={() => navigate(`/email/${email.id}`)}
                                         className="flex items-start gap-3 p-3 bg-white rounded-lg border border-slate-100
-                      hover:border-indigo-200 hover:shadow-sm cursor-pointer transition-all group"
+                      hover:border-indigo-200 hover:shadow-sm cursor-pointer transition-all group dark:bg-slate-900 dark:border-slate-800 dark:hover:border-indigo-800"
                                     >
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 flex-wrap">
-                                                <span className="text-sm font-medium text-slate-800 truncate group-hover:text-indigo-700">
+                                                <span className="text-base font-semibold text-slate-800 group-hover:text-indigo-700 dark:text-slate-100 dark:group-hover:text-indigo-300">
                                                     {email.subject}
                                                 </span>
                                                 {email.requires_action && (
@@ -115,7 +115,7 @@ export default function Digest() {
                                                     />
                                                 )}
                                             </div>
-                                            <p className="text-xs text-slate-500 mt-0.5 truncate">
+                                            <p className="text-sm text-slate-600 mt-1 leading-relaxed dark:text-slate-300">
                                                 {email.summary || email.snippet}
                                             </p>
                                             <p className="text-xs text-slate-400 mt-0.5">{email.sender}</p>

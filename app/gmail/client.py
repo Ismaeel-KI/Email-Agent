@@ -2,6 +2,7 @@ import base64
 import logging
 from datetime import datetime, timezone, timedelta
 from typing import TypedDict
+from bs4 import BeautifulSoup   
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -216,12 +217,6 @@ class GmailClient:
             logger.warning("Failed to parse message %s: %s", raw.get("id"), e)
             return None
 
-    def _extract_body(self, payload: dict) -> str:
-        body = self._find_part(payload, "text/plain")
-        if not body:
-            body = self._find_part(payload, "text/html")
-        return self._clean_text(body)
-
     def _find_part(self, payload: dict, mime_type: str) -> str:
         if payload.get("mimeType") == mime_type:
             data = payload.get("body", {}).get("data", "")
@@ -249,3 +244,22 @@ class GmailClient:
         if len(cleaned) > 2000:
             cleaned = cleaned[:2000] + "\n... [truncated]"
         return cleaned
+
+    def _extract_body(self, payload: dict) -> str:
+        plain = self._find_part(payload, "text/plain")
+        if len(plain.strip()) >= 50:          # real plain-text body, use it
+            return self._clean_text(plain)
+
+        html = self._find_part(payload, "text/html")
+        if html:
+            text = self._html_to_text(html)
+            # use the HTML version only if it actually has more content than the stub
+            return self._clean_text(text if len(text) > len(plain) else plain)
+
+        return self._clean_text(plain)
+
+    def _html_to_text(self, html: str) -> str:
+        soup = BeautifulSoup(html, "html.parser")
+        for tag in soup(["style", "script", "head", "title"]):
+            tag.decompose()
+        return soup.get_text(separator="\n", strip=True)

@@ -26,9 +26,9 @@ function Layout({ children }) {
   )
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans">
+    <div className="flex h-screen bg-slate-50 font-sans text-slate-800 dark:bg-slate-950 dark:text-slate-100">
       {/* Sidebar */}
-      <aside className="w-56 shrink-0 border-r border-slate-200 bg-white flex flex-col">
+      <aside className="w-56 shrink-0 border-r border-slate-200 bg-white flex flex-col dark:border-slate-800 dark:bg-slate-900">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-slate-100">
           <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ function Layout({ children }) {
         </nav>
 
         {/* Run button */}
-        <div className="px-3 py-4 border-t border-slate-100">
+        <div className="px-3 py-4 border-t border-slate-100 dark:border-slate-800">
           <RunButton />
         </div>
       </aside>
